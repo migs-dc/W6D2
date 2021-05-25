@@ -10,6 +10,7 @@ class SQLObject
       FROM #{self.table_name}
       LIMIT 1
     SQL
+    # print result
     @columns = result.first.keys.map { |ele| ele.to_sym }
   end
 
