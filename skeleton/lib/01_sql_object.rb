@@ -5,7 +5,12 @@ require 'active_support/inflector'
 
 class SQLObject
   def self.columns
-    # ...
+    result = DBConnection.execute(<<-SQL)
+      SELECT *
+      FROM #{self.table_name}
+      LIMIT 1
+    SQL
+    @columns = result.first.keys.map { |ele| ele.to_sym }
   end
 
   def self.finalize!
@@ -13,10 +18,11 @@ class SQLObject
 
   def self.table_name=(table_name)
     # ...
+    
   end
 
   def self.table_name
-    # ...
+    @table_name ||= self.name.downcase + 's'
   end
 
   def self.all
